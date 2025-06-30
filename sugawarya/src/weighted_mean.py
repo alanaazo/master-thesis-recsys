@@ -51,7 +51,7 @@ def main(model_paths, debug=False):
     # get best weight with validation preds
     #######################################
     behaivior_df, pred_cols = read_behavior_preds(model_paths, "validation", "first")
-    target_df = read_target_df("validation", "large")
+    target_df = read_target_df("validation", "small")
     target_df = target_df[["impression_id", "target", "target_article_id"]].rename(
         {"target_article_id": "article_ids_inview"}
     )
@@ -60,12 +60,12 @@ def main(model_paths, debug=False):
     explode_pred_df = target_df.join(
         explode_pred_df, on=["impression_id", "article_ids_inview"]
     )
-    if debug:
-        explode_pred_df = explode_pred_df.filter(
-            explode_pred_df["impression_id"].is_in(
-                explode_pred_df["impression_id"].unique().sort()[::1000]
-            )
-        )
+    # if debug:
+    #     explode_pred_df = explode_pred_df.filter(
+    #         explode_pred_df["impression_id"].is_in(
+    #             explode_pred_df["impression_id"].unique().sort()[::1000]
+    #         )
+    #     )
     best_params = optimize_weight_by_optuna(explode_pred_df, pred_cols)
     print(f"{best_params=}")
 
@@ -74,12 +74,12 @@ def main(model_paths, debug=False):
     #######################################
     behaivior_df, pred_cols = read_behavior_preds(model_paths, "test", "third")
     explode_pred_df = behaivior_df.explode(["article_ids_inview"] + pred_cols)
-    if debug:
-        explode_pred_df = explode_pred_df.filter(
-            explode_pred_df["impression_id"].is_in(
-                explode_pred_df["impression_id"].unique().sort()[::1000]
-            )
-        )
+    # if debug:
+    #     explode_pred_df = explode_pred_df.filter(
+    #         explode_pred_df["impression_id"].is_in(
+    #             explode_pred_df["impression_id"].unique().sort()[::1000]
+    #         )
+    #     )
 
     pred_ensemble = pl.Series(
         "pred_weighted_mean", [0] * len(explode_pred_df), pl.Float32
@@ -95,8 +95,8 @@ if __name__ == "__main__":
     parser.add_argument("--debug", action="store_true")
     args = parser.parse_args()
     kami_models = [
-        "kami/output/experiments/015_train_third/large067_001",
-        "kami/output/experiments/016_catboost/large067",
+        "kami/output/experiments/015_train_third/small067_001",
+        "kami/output/experiments/016_catboost/small067",
     ]
     kfujikawa_models = [
         "kfujikawa/data/kfujikawa/v1xxx_training/v1157_111_fix_past_v2",

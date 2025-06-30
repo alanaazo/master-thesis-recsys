@@ -15,8 +15,8 @@ FILE_DIR = Path(__file__).parent.name
 FILE_NAME = Path(__file__).stem
 OUTPUT_DIR = KFUJIKAWA_DIR / FILE_DIR / FILE_NAME
 KAMI_WEIGHTS = {
-    KAMI_DIR / "015_train_third/large067_001": 2,
-    KAMI_DIR / "016_catboost/large067": 1,
+    KAMI_DIR / "015_train_third/small067_001": 2,
+    KAMI_DIR / "016_catboost/small067": 1,
 }
 KAMI_SUFFIXES = {
     "validation": [

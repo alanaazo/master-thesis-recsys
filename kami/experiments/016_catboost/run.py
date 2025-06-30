@@ -16,6 +16,7 @@ import numpy as np
 import pandas as pd
 import polars as pl
 from catboost import CatBoostRanker, Pool
+import catboost as cb
 from hydra.core.hydra_config import HydraConfig
 from omegaconf import DictConfig, OmegaConf
 from tqdm.auto import tqdm
@@ -87,8 +88,8 @@ def process_df(cfg: DictConfig, df: pl.DataFrame) -> pl.DataFrame:
 
     need_cols = get_need_cols(cfg, df.columns)
     df = df[need_cols]
-    if cfg.debug:
-        df = df.head(1000)
+   # if cfg.debug:
+   #     df = df.head(1000)
     return df
 
 
@@ -201,6 +202,25 @@ def predict(cfg: DictConfig, bst, test_df: pd.DataFrame) -> pd.DataFrame:
 def save_model(cfg: DictConfig, bst, output_path: Path, name: int) -> None:
     with open(output_path / f"model_dict_{name}.pkl", "wb") as f:
         pickle.dump({"model": bst}, f)
+
+        # save feature importance
+    fig, ax = plt.subplots(figsize=(10, 20))
+    ax = cb.plot_importance(bst, importance_type="gain", ax=ax, max_num_features=100)
+    fig.tight_layout()
+    fig.savefig(output_path / f"importance_{name}.png")
+
+    # importance を log に出力
+    importance_df = pd.DataFrame(
+        {
+            "feature": bst.feature_name(),
+            "importance": bst.feature_importance(importance_type="gain"),
+        }
+    )
+    importance_df = importance_df.sort_values("importance", ascending=False)
+    # 省略せずに表示
+    pd.set_option("display.max_rows", None)
+    logger.info(importance_df)
+    logger.info(importance_df["feature"].to_list())
 
 
 def make_result_df(df: pl.DataFrame, pred: np.ndarray):

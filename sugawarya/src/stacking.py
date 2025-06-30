@@ -195,15 +195,15 @@ def main(model_paths, debug=False):
     behaivior_df, pred_cols = read_behavior_preds(model_paths, "validation", "first")
 
     explode_pred_df = behaivior_df.explode(["article_ids_inview"] + pred_cols)
-    if debug:
-        explode_pred_df = explode_pred_df.filter(
-            explode_pred_df["impression_id"].is_in(
-                explode_pred_df["impression_id"].unique().sort()[::1000]
-            )
-        )
+    #if debug:
+    #    explode_pred_df = explode_pred_df.filter(
+    #        explode_pred_df["impression_id"].is_in(
+    #            explode_pred_df["impression_id"].unique().sort()[::1000]
+    #        )
+    #    )
     df = feature_engineering(explode_pred_df, pred_cols)
 
-    target_df = read_target_df("validation", "large")
+    target_df = read_target_df("validation", "small")
     target_df = target_df[["impression_id", "target", "target_article_id"]].rename(
         {"target_article_id": "article_ids_inview"}
     )
@@ -214,13 +214,15 @@ def main(model_paths, debug=False):
     # inference
     #######################################
     behaivior_df, pred_cols = read_behavior_preds(model_paths, "test", "third")
+    behaivior_df, pred_cols = read_behavior_preds(model_paths, "train", "third")
+    behaivior_df, pred_cols = read_behavior_preds(model_paths, "val", "third")
     explode_pred_df = behaivior_df.explode(["article_ids_inview"] + pred_cols)
-    if debug:
-        explode_pred_df = explode_pred_df.filter(
-            explode_pred_df["impression_id"].is_in(
-                explode_pred_df["impression_id"].unique().sort()[::1000]
-            )
-        )
+    # if debug:
+    #     explode_pred_df = explode_pred_df.filter(
+    #         explode_pred_df["impression_id"].is_in(
+    #             explode_pred_df["impression_id"].unique().sort()[::1000]
+    #         )
+    #     )
     df = feature_engineering(explode_pred_df, pred_cols)
     pred_ar = np.zeros(len(df))
     for model in tqdm.tqdm(models, total=len(models)):
@@ -231,6 +233,8 @@ def main(model_paths, debug=False):
 
     # save
     pred_df.write_parquet(BASE_DIR / "output" / "test_stacking.parquet")
+    pred_df_val.write_parquet(BASE_DIR / "output" / "val_stacking.parquet")
+    pred_df_train.write_parquet(BASE_DIR / "output" / "train_stacking.parquet")
 
 
 if __name__ == "__main__":
@@ -238,8 +242,8 @@ if __name__ == "__main__":
     parser.add_argument("--debug", action="store_true")
     args = parser.parse_args()
     kami_models = [
-        "kami/output/experiments/015_train_third/large067_001",
-        "kami/output/experiments/016_catboost/large067",
+        "kami/output/experiments/015_train_third/small067_001",
+        "kami/output/experiments/016_catboost/small067",
     ]
     kfujikawa_models = [
         "kfujikawa/data/kfujikawa/v1xxx_training/v1157_111_fix_past_v2",

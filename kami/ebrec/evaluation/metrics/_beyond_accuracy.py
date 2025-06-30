@@ -112,6 +112,7 @@ def coverage_count(R: np.ndarray) -> int:
     return np.unique(R).size
 
 
+
 def coverage_fraction(R: np.ndarray, C: np.ndarray) -> float:
     """Calculate the fraction of distinct items in the recommendation list compared to a universal set.
 

@@ -4,7 +4,7 @@ from invoke import task
 
 @task
 def create_candidates(ctx, debug=False):
-    ctx.run("python preprocess/test_demo/run.py")
+    #ctx.run("python preprocess/test_demo/run.py")
     scripts = [        
         "preprocess/make_candidate/run.py"
     ]

@@ -2920,6 +2920,7 @@ def train(
             train_dataloaders=train_dataloader,
             val_dataloaders=valid_dataloader,
         )
+    torch.save(model, config.common.fold_output_dir / "v1184_111_PL_bert_L4_256d.pkl")
 
 
 @APP.command()

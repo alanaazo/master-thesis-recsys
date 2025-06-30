@@ -86,7 +86,7 @@ def read_preds(pred_dir_path: str, data_period: str, pred_type: str):
 
 def read_behavior_preds(model_path_list: list, data_period: str, pred_type: str):
     behaivior_df = pl.read_parquet(
-        DATA_DIR / f"ekstra_original/ebnerd_large/{data_period}/behaviors.parquet",
+        DATA_DIR / f"ekstra_original/ebnerd_small/{data_period}/behaviors.parquet",
         columns=["impression_id", "user_id", "article_ids_inview"],
     )
 
