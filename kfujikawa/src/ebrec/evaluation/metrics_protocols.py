@@ -9,6 +9,8 @@ from ebrec.evaluation.protocols import Metric
 from ebrec.evaluation.metrics import (
     mean_squared_error,
     accuracy_score,
+    precision_score,
+    recall_score,
     roc_auc_score,
     ndcg_score,
     mrr_score,
@@ -48,6 +50,33 @@ class F1Score(Metric):
         )
         return float(res)
 
+class Precision_score(Metric):
+    def __init__(self, threshold: float = 0.5):
+        self.threshold = threshold
+        self.name = "precision"
+
+    def calculate(self, y_true: list[np.ndarray], y_pred: list[np.ndarray]) -> float:
+        res = np.mean(
+            [
+                precision_score(each_labels, convert_to_binary(each_preds, self.threshold))
+                for each_labels, each_preds in zip(y_true, y_pred)
+            ]
+        )
+        return float(res)
+
+class Recall_score(Metric):
+    def __init__(self, threshold: float = 0.5):
+        self.threshold = threshold
+        self.name = "recall"
+
+    def calculate(self, y_true: list[np.ndarray], y_pred: list[np.ndarray]) -> float:
+        res = np.mean(
+            [
+                recall_score(each_labels, convert_to_binary(each_preds, self.threshold))
+                for each_labels, each_preds in zip(y_true, y_pred)
+            ]
+        )
+        return float(res)
 
 class RootMeanSquaredError(Metric):
     def __init__(self):

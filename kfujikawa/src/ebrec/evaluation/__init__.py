@@ -2,6 +2,8 @@ from .metrics_protocols import (
     RootMeanSquaredError,
     MetricEvaluator,
     AccuracyScore,
+    Precision_score,
+    Recall_score,
     LogLossScore,
     NdcgScore,
     AucScore,

@@ -6,6 +6,8 @@ try:
         roc_auc_score,
         # _classification:
         accuracy_score,
+        precision_score,
+        recall_score,
         f1_score,
         log_loss,
     )

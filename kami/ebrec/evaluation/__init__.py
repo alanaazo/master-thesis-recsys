@@ -9,6 +9,8 @@ from .metrics_protocols import (
     AccuracyScore,
     AucScore,
     F1Score,
+    Precision_score,
+    Recall_score,
     LogLossScore,
     MetricEvaluator,
     MrrScore,
