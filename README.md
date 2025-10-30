@@ -1,15 +1,10 @@
-# Master Thesis
+# Master Thesis: Evaluating and Refining Recommendation Quality: A Case Study of the RecSys Challenge 2024 Winner
 # Author: Alana Zoloeva
-
-
-The code used to create the model for my thesis is in the following notebook: ./thesis.ipynb
-
-To run the model of winners of the challenge, follow instructions in ./README_winners.md
-
-# News Recommendation under Cold-Start Conditions (RecSys Challenge 2024)
-
 This project investigates lightweight approaches for personalized news recommendation in the context of the **RecSys Challenge 2024**, focusing on **cold-start users** and **model interpretability**.
 The main objective was to improve **AUC** and beyond-accuracy metrics (diversity, novelty) while maintaining minimal model complexity.
+
+The code used to create the model for my thesis is in the following notebook: **./thesis.ipynb**
+To run the model of winners of the challenge, follow instructions in **./README_winners.md**
 
 ## Methodology
 
