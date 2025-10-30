@@ -3,6 +3,7 @@
 This project investigates lightweight approaches for personalized news recommendation in the context of the **RecSys Challenge 2024**, focusing on **cold-start users** and **model interpretability**.
 The main objective was to improve **AUC** and beyond-accuracy metrics (diversity, novelty) while maintaining minimal model complexity.
 
+The code is based on improving quality of the winner model.
 The code used to create the model for my thesis is in the following notebook: **./thesis.ipynb**
 To run the model of winners of the challenge, follow instructions in **./README_winners.md**
 
